@@ -3,6 +3,7 @@ const OTP = require("../models/otpModel")
 const otpGenerator = require('otp-generator')
 const bcrypt = require("bcrypt")
 const Profile = require("../models/profileModel")
+const jwt = require("jsonwebtoken")
 
 exports.sendOTP = async (req,res) => {
     try{ 
@@ -69,9 +70,9 @@ exports.signUP = async (req,res) => {
         //check user not present in db
         const user = await  User.findOne({email : email}) 
         if(user){
-            return res.status(400).json({
+            return res.status(404).json({
                 success : false,
-                message : "confirm paassword in not matched"
+                message : "account not found"
             }) 
         }
 
@@ -125,7 +126,50 @@ exports.signUP = async (req,res) => {
 
 exports.signIn = async (req,res) => {
     try{
-        
+        //fetch data 
+        const {email , password } = req.body
+
+        //find user in db
+        const user = await User.findOne({email})
+        if(user){
+            return res.status(404).json({
+                success : false,
+                message : "account not found"
+            }) 
+        }
+
+        //check password
+        if(!bcrypt.compare(password,user.password)){
+            return res.status(400).json({
+                success : true,
+                message : " password does not match "
+           }) 
+        }
+
+        //if true create token
+        const payload = {
+            email : user.email,
+            Id : user._Id,
+            accountType : user.accountType
+        }
+
+        const token = jwt.sign(payload , process.env.JWT_SECRET_KEY , { expiresIn: '2h' })
+
+        user.password = undefined 
+        user.token = token
+
+        const option = {
+            expires : new Date(Date.now + 3*24*60*60*1000 ),
+            httponly : true 
+        }
+
+        res.cookie("token",token,option).status(200).json({
+            success : true,
+            user,
+            message: "user looged in successfully"
+        })
+
+
     }catch(err){
         console.log("error in sending otp")
         console.error(err)
@@ -152,6 +196,12 @@ exports.changePassword = async (req, res) => {
 
         //get user from db 
         const user = await User.findOne({email})
+        if(user){
+            return res.status(404).json({
+                success : false,
+                message : "account not found"
+            }) 
+        }
 
         //check password is coorect 
         if(!bcrypt.compare(password,user.password)){
@@ -176,8 +226,6 @@ exports.changePassword = async (req, res) => {
         })
 
 
-        
-UTYRRY
     } catch (error) {
         console.log("error in changing password")
         console.error(error)
