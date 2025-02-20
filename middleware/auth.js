@@ -1,6 +1,6 @@
 require("dotenv").config()
 
-exports.isauth = async (req , res , next) => {
+export async function isauth(req , res , next) {
     //fetch token 
     const {token} = req.body || req.cookies 
 
@@ -20,7 +20,7 @@ exports.isauth = async (req , res , next) => {
 
 }
 
-exports.isStudent = async (req , res , next) => {
+export async function isStudent(req , res , next) {
     if(req.user.accountType !== "student"){
         return res.status(500).json({
             success : true,
@@ -32,7 +32,7 @@ exports.isStudent = async (req , res , next) => {
 
 }
 
-exports.isAdmin = async (req , res , next) => {
+export async function isAdmin(req , res , next) {
     if(req.user.accountType !== "admin"){
         return res.status(500).json({
             success : true,
@@ -45,7 +45,7 @@ exports.isAdmin = async (req , res , next) => {
 }
 
 
-exports.isInstuctor = async (req , res , next) => {
+export async function isInstuctor(req , res , next) {
     if(req.user.accountType !== "instructor"){
         return res.status(500).json({
             success : true,
