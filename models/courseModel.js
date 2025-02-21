@@ -23,7 +23,7 @@ const courseSchema = new mongoose.Schema({
         ref : "User" 
     },
 
-    whatwillyoulearn : {
+    whatWillYouLearn : {
         type : String,
         require : true
     },
@@ -31,6 +31,10 @@ const courseSchema = new mongoose.Schema({
     tumbnail : {
         type : String,
         require : true 
+    },
+
+    tag : {
+        type : String,
     },
 
     students : [
@@ -54,12 +58,11 @@ const courseSchema = new mongoose.Schema({
         }
     ],
 
-    tags : [
-        {
-            type : mongoose.Schema.Types.ObjectId,
-            ref : "Tag" 
-        }
-    ]
+    category :{
+        type : mongoose.Schema.Types.ObjectId,
+        ref : "Category" 
+    }
+        
 
 })
 
