@@ -6,16 +6,6 @@ const profileSchema = new mongoose.Schema({
         enum : [male, female, other]
     },
 
-    address : {
-        type : String,
-        trim : true
-    },
-
-    pincode : {
-        type : String,
-        length : 6
-    },
-
     dob : {
         type : date
     },
