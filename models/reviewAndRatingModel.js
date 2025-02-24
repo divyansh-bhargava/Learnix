@@ -13,7 +13,15 @@ const randrSchema = new mongoose.Schema({
     rating : {
         type : number ,
         enum : [1,2,3,4,5]
-    }
+    },
+
+    course: {
+		type: mongoose.Schema.Types.ObjectId,
+		required: true,
+		ref: "Course",
+		index: true,
+	}
+
 })
     
 module.exports = mongoose.model("R&R", randrSchema )

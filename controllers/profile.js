@@ -71,7 +71,7 @@ exports.DeleteProfile = async (req, res) => {
             {new : true})
 
            //delete course progress
-           const courseprogress = await CourseProgress.findOneAndDelete({course : courseId})
+           const courseprogress = await CourseProgress.deleteMany({userId : Id})
 
         })
 
@@ -83,9 +83,10 @@ exports.DeleteProfile = async (req, res) => {
 
     }
     catch (err) {
-    return res.json({
-        success: false,
-        message: " error in Account delete process",
-    })
+        return res.json({
+            success: false,
+            message: " error in Account delete process",
+        })
+    }
 }
-}
+

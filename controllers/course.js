@@ -2,6 +2,7 @@ const Course = require('../models/courseModel');
 const User = require('../models/userModel');
 const Category = require('../models/categoryModel');
 const {uploadImageToCloudinary}  = require('../utils/cloudinary');
+const { populate } = require('../models/reviewAndRatingModel');
 require("dotenv").config();
 
 
@@ -83,4 +84,45 @@ exports.getAllCourse = async (req , res) => {
         data : courses,
         message : "all corses fetched succesfully"
     })
+}
+
+
+exports.getCourseAllDetails = async (req ,res ) => {
+    try{
+        //fetch
+        const courseId = req.body.courseId
+
+        //find course
+        const details = Course.findById(courseId)
+                        .populate({
+                            path : "instructor",
+                            populate : {
+                                path : "profile"
+                            }
+                        })
+                        .populate({
+                            path : "courseContent",
+                            populate : {
+                                path : "subSection"
+                            }
+                        })
+                        .populate({
+                            path : "reviewsandrating"
+                        })
+                        .populate("category")
+                        .exec()
+
+        return res.status(500).json({
+            success : true ,
+            data : details,
+            message : "all details of course fetched succesfully"
+        })
+    }
+    catch(err){
+        console.log(err);
+        return res.status(500).json({
+            success : false,
+            message :" err in fectcing details of course "
+        })
+    }
 }
