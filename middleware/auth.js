@@ -1,13 +1,16 @@
-require("dotenv").config()
+// const jwt = require("jsonwebtoken")
 
-export async function isauth(req, res, next) {
+export async function isAuth(req, res, next) {
     try {
         //fetch token 
-        const { token } = req.body || req.cookies
+        const token =
+            req.cookies.token ||
+            req.body.token ||
+            req.header("Authorization").replace("Bearer ", "");
 
         if (!token) {
             return res.status(404).json({
-                success: true,
+                success: false,
                 message: "user token not found"
             })
         }

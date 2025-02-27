@@ -2,13 +2,21 @@ const express = require("express")
 const app = express()
 
 require("dotenv").config()
+const db = require("./config/database")
+const cookieParser = require("cookie-parser")
+const user = require("./routes/user")
+
+
+
 const port = process.env.PORT || 3000
 
 app.use(express.json())
+app.use(cookieParser())
 
-const routes = require("")
 
-const db = require("./config/database")
+app.use("/api/v1/auth", user);
+
+
 db()
 
 app.listen(port ,()=>{

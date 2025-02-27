@@ -32,7 +32,17 @@ const userSchema = new mongoose.Schema({
 
     accountType : {
         type : String,
-        enum : [student , instructor , admin]
+        enum : ["student" , "instructor" , "admin"]
+    },
+
+    active: {
+        type: Boolean,
+        default: true,
+    },
+
+    approved: {
+        type: Boolean,
+        default: true,
     },
 
     token : {
@@ -41,6 +51,11 @@ const userSchema = new mongoose.Schema({
 
     tokenExpiresIn : {
         type : String
+    },
+
+    image: {
+        type: String,
+        // required: true,
     },
 
     courses : [
@@ -63,6 +78,6 @@ const userSchema = new mongoose.Schema({
     }
 
 
-})
+},{ timestamps: true })
 
 module.exports = mongoose.model("User", userSchema )

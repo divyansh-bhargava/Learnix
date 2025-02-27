@@ -3,11 +3,11 @@ const mongoose = require('mongoose')
 const profileSchema = new mongoose.Schema({
     gender : {
         type : String,
-        enum : [male, female, other]
+        enum : ["male", "female", "other"]
     },
 
     dob : {
-        type : date
+        type : Date
     },
 
     about : {
@@ -17,4 +17,4 @@ const profileSchema = new mongoose.Schema({
 
 })
 
-module.exports = mongoose.model("Profile", userSchema )
+module.exports = mongoose.model("Profile", profileSchema )

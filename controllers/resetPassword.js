@@ -1,10 +1,12 @@
-const { mailSender } = require("../utils/mailSender")
+const  mailSender  = require("../utils/mailSender")
 const User = require("../models/userModel")
 const bcrypt = require("bcrypt")
+const crypto = require("crypto")
 
 exports.resetPasswordLink = async (req, res) => {
     try {
         const { email } = req.body
+        console.log(email);
 
         if (!email) {
             return res.status(401).json({
@@ -13,7 +15,19 @@ exports.resetPasswordLink = async (req, res) => {
             })
         }
 
+        const user = await User.findOne({email});
+        console.log(user);
+
+        if(!user){
+            return res.status(404).json({
+                success: false,
+                message: "account not found"
+            })
+        }
+
+
         const token = crypto.randomUUID()
+        console.log(token);
 
         const tokendb = await User.findOneAndUpdate({ email: email }, {
             token: token,
@@ -28,9 +42,16 @@ exports.resetPasswordLink = async (req, res) => {
         }
 
         const url = `https://localhost:3000/resetpassword/${token}`
-        const body = <h2>click , the link to change the password do not share with anyone and expires in 5 min</h2>
+        const body = "<h2>click , the link to change the password do not share with anyone and expires in 5 min</h2>"
 
-        await mailSender(email, url, body)
+        const mail = await mailSender(email, url, body)
+        console.log(mail);
+
+        return res.status(400).json({
+            success: true,
+            data : mail,
+            message: "mail send successfully"
+        })
 
     } catch (error) {
         console.log("error in resent link send");
@@ -46,7 +67,7 @@ exports.resetPasswordLink = async (req, res) => {
 exports.resetPassword = async (req, res) => {
     try {
 
-        const { email, password, confirmPassword, token } = req.body
+        const { password, confirmPassword, token } = req.body
 
         if(password !== confirmPassword){
             return res.status(400).json({
@@ -55,25 +76,26 @@ exports.resetPassword = async (req, res) => {
             }) 
         }
 
-        const user = await User.findOne({ email: email })
-        if (user) {
+        const user = await User.findOne({token : token})
+
+        if (!user) {
             return res.status(404).json({
                 success: false,
-                message: "account not found"
+                message: "token is invalid"
             })
         }
 
-        if(user.token !== token || user.tokenExpiresIn < Date.now() ){
-            return res.status(500).json({
-                success: false,
-                message: "token was expired genarate, new link"
-            })
-        }
+        if (user.tokenExpiresIn < Date.now()) {
+			return res.status(403).json({
+				success: false,
+				message: `Token is Expired, Please Regenerate Your Token`,
+			});
+		}
 
         //password hassed
         const hashed =  await bcrypt.hash(password,10)
 
-        const newUser = await User.findOneAndUpdate({email},{
+        const newUser = await User.findOneAndUpdate({email : user.email},{
             password : hashed
         },{new : true})
 
