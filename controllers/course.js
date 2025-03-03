@@ -1,34 +1,37 @@
 const Course = require('../models/courseModel');
 const User = require('../models/userModel');
 const Category = require('../models/categoryModel');
-const {uploadImageToCloudinary}  = require('../utils/cloudinary');
-const { populate } = require('../models/reviewAndRatingModel');
+const uplodeImageTOCloudinary  = require('../utils/cloudinary');
 require("dotenv").config();
 
 
-exports.createCourse = async (req , res) => {
+exports.createCourse = async (req, res) => {
+    console.log(req);
 
-    const { courseName ,courseDescription ,whatWillYouLearn , price , tag , category  } = req.body
+    const { courseName, courseDescription, whatWillYouLearn, price, tag, category, instructions } = req.body
+console.log(courseName);
 
-    const thumbnail = req.file.thumbnail
+    const thumbnail = req.files.thumbnailImage
 
-    if(!courseName || !courseDescription || !whatWillYouLearn || !price || !tag || !category || !thumbnail ){
+    console.log(thumbnail)
+
+    if (!courseName || !courseDescription || !whatWillYouLearn || !price || !tag || !category) {
         return res.status(400).json({
-            success : false,
-            message : "fill all details"
+            success: false,
+            message: "fill all details"
         })
     }
 
-    const image =  await uploadImageToCloudinary( thumbnail, process.env.FOLDER_NAME )
+    const image = await uplodeImageTOCloudinary (thumbnail, process.env.FOLDER_NAME)
 
     const instructorId = req.user.Id
 
-    const categorydb = await Category.findOne({ name : category })
+    const categorydb = await Category.findOne({ name: category })
 
-    if(!categorydb){
+    if (!categorydb) {
         return res.status(400).json({
-            success : false,
-            message : "invalid category"
+            success: false,
+            message: "invalid category"
         })
     }
 
@@ -38,91 +41,92 @@ exports.createCourse = async (req , res) => {
         whatWillYouLearn,
         price,
         tag,
-        instructor : instructorId,
-        thumbnail : image,
-        category : category 
+        instructions,
+        instructor: instructorId,
+        thumbnail: image,
+        category: category
     })
 
-    const user = await User.findByIdAndUpdate(instructorId,{
-        course : course._id
-    },{new : true})
+    const user = await User.findByIdAndUpdate(instructorId, {
+        courses: course._id
+    }, { new: true })
 
-    const newcategory = await Category.findByIdAndUpdate(category,{
-        course : course._id
-    },{new : true})
+    const newcategory = await Category.findByIdAndUpdate(category, {
+        courses: course._id
+    }, { new: true })
 
     res.status(400).json({
-        success : true ,
-        data : course ,
-        message : "course created successfully"
+        success: true,
+        data: course,
+        message: "course created successfully"
     })
 
 }
 
 
-exports.getAllCourse = async (req , res) => {
-    
-    const courses = await Course.find({},{
-        coursename : true,
-        courseDescription : true,
+exports.getAllCourse = async (req, res) => {
+
+    const courses = await Course.find({}, {
+        coursename: true,
+        courseDescription: true,
         price: true,
-        tag : true,
-        whatWillYouLearn : true,
-        instructor : true,
-        category : true
+        tag: true,
+        whatWillYouLearn: true,
+        instructor: true,
+        category: true
     }).populate("instructor").exec()
 
-    if(!courses){
+    if (!courses) {
         return res.status(404).json({
-            success : false,
-            message : "courses not found"
-        }) 
+            success: false,
+            message: "courses not found"
+        })
     }
 
     res.status(400).json({
-        success : true,
-        data : courses,
-        message : "all corses fetched succesfully"
+        success: true,
+        data: courses,
+        message: "all corses fetched succesfully"
     })
 }
 
 
-exports.getCourseAllDetails = async (req ,res ) => {
-    try{
+exports.getCourseAllDetails = async (req, res) => {
+    try {
         //fetch
         const courseId = req.body.courseId
 
         //find course
         const details = Course.findById(courseId)
-                        .populate({
-                            path : "instructor",
-                            populate : {
-                                path : "profile"
-                            }
-                        })
-                        .populate({
-                            path : "courseContent",
-                            populate : {
-                                path : "subSection"
-                            }
-                        })
-                        .populate({
-                            path : "reviewsandrating"
-                        })
-                        .populate("category")
-                        .exec()
+            .populate({
+                path: "instructor",
+                populate: {
+                    path: "profile"
+                }
+            })
+            .populate({
+                path: "courseContent",
+                populate: {
+                    path: "subSection"
+                }
+            })
+            .populate({
+                path: "reviewsandrating"
+            })
+            .populate("category")
+            .exec()
 
         return res.status(500).json({
-            success : true ,
-            data : details,
-            message : "all details of course fetched succesfully"
+            success: true,
+            data: details,
+            message: "all details of course fetched succesfully"
         })
     }
-    catch(err){
+    catch (err) {
         console.log(err);
         return res.status(500).json({
-            success : false,
-            message :" err in fectcing details of course "
+            success: false,
+            message: " err in fectcing details of course "
         })
     }
 }

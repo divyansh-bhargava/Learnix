@@ -11,7 +11,7 @@ const randrSchema = new mongoose.Schema({
     },
     
     rating : {
-        type : number ,
+        type : Number ,
         enum : [1,2,3,4,5]
     },
 

@@ -4,6 +4,7 @@ const User = require("../models/userModel")
 const CourseProgress = require("../models/couseProgressModel")
 const mailSender = require("../utils/mailSender")
 const courseEnrollmentEmail = require("../mails/courseEnrollmentEmail")
+const crypto = require("crypto")
 require("dotenv").config()
 
 
@@ -37,7 +38,7 @@ exports.capturePayment = async (req, res) => {
                 })
             }
 
-            const alreadybuy = User.find({ _id: userId }, { course: { $eleMatch: { $eq: courseId } } })
+            const alreadybuy = User.find({ _id: userId }, { courses: { $eleMatch: { $eq: courseId } } })
             if (alreadybuy) {
                 return res.status(500).json({
                     success: false,
@@ -174,7 +175,7 @@ const enrolledStudent = async (courses , userId , res) => {
         })
 
 
-        const updateUser = await User.findByIdAndUpdate(
+        const enrolledStudent = await User.findByIdAndUpdate(
             userId , 
             {   
                 $push : {
@@ -186,18 +187,18 @@ const enrolledStudent = async (courses , userId , res) => {
         )
 
         await mailSender(
-            updateUser.email,
+            enrolledStudent.email,
             `Successfully Enrolled in ${updateCourse.courseName} course`,
             courseEnrollmentEmail(
                 enrolledCourse.courseName,
-                `${enrolledStudent.firstName} ${enrolledStudent.lastName}`
+                `${enrolledStudent.fName} ${enrolledStudent.lName}`
               )
         )
 
         return res.status(500).json({
             success : true ,
             data : {
-                updateUser ,
+                enrolledStudent ,
                 updateCourse,
             },
             message : "student enrolled success fully"

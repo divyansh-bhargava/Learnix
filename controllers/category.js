@@ -1,4 +1,4 @@
-const Category = require("../models/category")
+const Category = require("../models/categoryModel")
 
 exports.createCategory = async (req, res) => {
     try {
@@ -55,3 +55,7 @@ exports.getAllCategory = async (req, res) => {
     }
 }
 
+
+exports.categoryPageDetails = async( req , res) => {
+    
+}

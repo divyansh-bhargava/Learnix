@@ -3,7 +3,7 @@ const router = express.Router()
 
 const {signUp , signIn , sendOTP, changePassword} = require("../controllers/auth")
 const { resetPassword , resetPasswordLink} = require("../controllers/resetPassword")
-const { isAuth } = require("../middleware/auth")
+const { isAuth } = require("../middleware/Auth.js")
 
 
 //------Auth--------

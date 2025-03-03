@@ -1,5 +1,6 @@
 const Section = require("../models/sectionModel")
 const Course = require("../models/courseModel")
+const SubSection = require("../models/subSectionModel")
 
 exports.createSection = async (req, res) => {
     try {
@@ -86,11 +87,18 @@ exports.deleteSection = async (req, res) => {
             })
         }
 
-        const section = await Section.findByIdAndDelete(sectionId)
+        const section = await Section.findById(sectionId)
+
+        section.subsection.forEach(async(subsectionId)=> {
+            const subsection = await SubSection.findByIdAndDelete(subsectionId)
+        })
+        
+
+        const deletesection = await Section.findByIdAndDelete(sectionId)
 
         res.status(400).json({
             success: true,
-            section,
+            deletesection,
             message: "section deleted success fully"
         })
     }

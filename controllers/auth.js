@@ -180,7 +180,7 @@ exports.signIn = async (req, res) => {
             accountType: user.accountType
         }
 
-        const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: '2h' })
+        const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: '5h' })
 
         user.password = undefined
         user.token = token
@@ -252,16 +252,14 @@ exports.changePassword = async (req, res) => {
         try {
             const mail = await mailSender(user.email,
                 "Password Changed Successfully",
-                passwordUpdated(email, `${user.fname} ${user.lname}`
-
-                )
+                passwordUpdated(email, `${user.fname} ${user.lname}`)
             )
         }
         catch (err) {
-
+            console.log(err);
             return res.status(500).json({
                 success: false,
-                message: "err in reset password mail  "
+                message: "err in reset password mail "
             })
         }
 

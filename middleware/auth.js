@@ -1,105 +1,99 @@
-// const jwt = require("jsonwebtoken")
-
-export async function isAuth(req, res, next) {
-    try {
-        //fetch token 
-        const token =
-            req.cookies.token ||
-            req.body.token ||
-            req.header("Authorization").replace("Bearer ", "");
-
-        if (!token) {
-            return res.status(404).json({
-                success: false,
-                message: "user token not found"
-            })
-        }
-
-        //decode token 
-        try {
-            const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY)
-            req.user = decoded
-        } catch (err) {
-            return res.status(401).json({
-                success: false,
-                message: err.message
-            })
-        }
-
-        next()
-    } catch (error) {
-        console.log("somthing in while token parsing")
-        console.error(err)
-        res.status(401).json({
-            success: false,
-            message: "something went wrong in token parsing"
-        })
-    }
-
-}
-
-export async function isStudent(req, res, next) {
-    try {
-        if (req.user.accountType !== "student") {
-            return res.status(500).json({
-                success: true,
-                message: "this is private route for student only"
-            })
-        }
-
-        next()
-    } catch (err) {
-        console.log("somthing in while finding routes")
-        console.error(err)
-        res.status(401).json({
-            success: false,
-            message: "something went wrong in finding role and path"
-        })
-    }
-
-}
-
-export async function isAdmin(req, res, next) {
-    try {
-        if (req.user.accountType !== "admin") {
-            return res.status(500).json({
-                success: false,
-                message: "this is private route for admin only"
-            })
-        }
-
-        next()
-    }
-    catch (err) {
-        console.log("somthing in while finding routes")
-        console.error(err)
-        res.status(401).json({
-            success: false,
-            message: "something went wrong in finding role and path"
-        })
-    }
-
-}
+const jwt = require("jsonwebtoken")
+const User = require("../models/userModel")
+require("dotenv").config()
 
 
-export async function isInstuctor(req, res, next) {
-    try {
-        if (req.user.accountType !== "instructor") {
-            return res.status(500).json({
-                success: false,
-                message: "this is private route for instructor only"
-            })
-        }
+exports.isAuth = async (req, res, next) => {
+	try {
+		const token =
+			req.cookies.token ||
+			req.body.token ||
+			req.header("Authorization").replace("Bearer ", "");
 
-        next()
-    }
-    catch (err) {
-        console.log("somthing in while finding routes")
-        console.error(err)
-        res.status(401).json({
-            success: false,
-            message: "something went wrong in finding role and path"
-        })
-    }
+		if (!token) {
+			return res.status(401).json({ success: false, message: `Token Missing` });
+		}
 
-}
+		console.log(token)
+
+		try {
+			const decode =  jwt.verify(`${token}`, process.env.JWT_SECRET_KEY);
+			console.log(decode);
+			req.user = decode;
+		} catch (error) {
+			console.log(error);
+			// If JWT verification fails, return 401 Unauthorized response
+			return res
+				.status(401)
+				.json({ success: false, message: "token is invalid" });
+		}
+
+		next();
+	} catch (error) {
+		// If there is an error during the authentication process, return 401 Unauthorized response
+		return res.status(401).json({
+			success: false,
+			message: `Something Went Wrong While Validating the Token`,
+		});
+	}
+};
+
+
+exports.isStudent = async (req, res, next) => {
+	try {
+		const userDetails = await User.findOne({ email: req.user.email });
+
+		if (userDetails.accountType !== "Student") {
+			return res.status(401).json({
+				success: false,
+				message: "This is a Protected Route for Students",
+			});
+		}
+		next();
+	} catch (error) {
+		return res
+			.status(500)
+			.json({ success: false, message: `User Role Can't be Verified` });
+	}
+};
+
+
+exports.isAdmin = async (req, res, next) => {
+	try {
+		const userDetails = await User.findOne({ email: req.user.email });
+
+		if (userDetails.accountType !== "Admin") {
+			return res.status(401).json({
+				success: false,
+				message: "This is a Protected Route for Admin",
+			});
+		}
+		next();
+	} catch (error) {
+		return res
+			.status(500)
+			.json({ success: false, message: `User Role Can't be Verified` });
+	}
+};
+
+
+exports.isInstructor = async (req, res, next) => {
+	try {
+		const userDetails = await User.findOne({ email: req.user.email });
+		console.log(userDetails);
+
+		console.log(userDetails.accountType);
+
+		if (userDetails.accountType !== "instructor") {
+			return res.status(401).json({
+				success: false,
+				message: "This is a Protected Route for Instructor",
+			});
+		}
+		next();
+	} catch (error) {
+		return res
+			.status(500)
+			.json({ success: false, message: `User Role Can't be Verified` });
+	}
+};
