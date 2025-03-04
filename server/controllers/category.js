@@ -17,10 +17,15 @@ exports.createCategory = async (req, res) => {
         try {
             const category = await Category.create({ name, description })
             console.log("create category", category)
+            return res.status(401).json({
+                success: true,
+                data : category,
+                message: "category created sucessfully"
+            })
+
         } catch (error) {
             return res.status(401).json({
                 success: false,
-                data : category,
                 message: "something went wrong while saving category in db"
             })
         }
@@ -38,11 +43,11 @@ exports.createCategory = async (req, res) => {
 
 exports.getAllCategory = async (req, res) => {
     try {
-        const category = Category.find({}, { name: true, description: true })
+        const category = await Category.find({}, { name: true, description: true })
 
         res.status(200).json({
             success: true,
-            category,
+            data : category,
             message: "all category"
         })
     } catch (err) {

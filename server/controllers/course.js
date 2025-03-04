@@ -6,16 +6,14 @@ require("dotenv").config();
 
 
 exports.createCourse = async (req, res) => {
-    console.log(req);
 
     const { courseName, courseDescription, whatWillYouLearn, price, tag, category, instructions } = req.body
-console.log(courseName);
 
     const thumbnail = req.files.thumbnailImage
 
     console.log(thumbnail)
 
-    if (!courseName || !courseDescription || !whatWillYouLearn || !price || !tag || !category) {
+    if (!courseName || !courseDescription || !whatWillYouLearn || !price || !tag || !category || !thumbnail) {
         return res.status(400).json({
             success: false,
             message: "fill all details"
@@ -23,10 +21,12 @@ console.log(courseName);
     }
 
     const image = await uplodeImageTOCloudinary (thumbnail, process.env.FOLDER_NAME)
+    console.log(image);
 
     const instructorId = req.user.Id
+    console.log(req.user);
 
-    const categorydb = await Category.findOne({ name: category })
+    const categorydb = await Category.findOne({ _id : category })
 
     if (!categorydb) {
         return res.status(400).json({
@@ -43,7 +43,7 @@ console.log(courseName);
         tag,
         instructions,
         instructor: instructorId,
-        thumbnail: image,
+        tumbnail: image.url,
         category: category
     })
 

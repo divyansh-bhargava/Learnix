@@ -19,9 +19,10 @@ exports.createRating = async (req, res) => {
                 message: " details are missing"
             })
         }
-
+        console.log(userId , courseId)
         //check user is enrolled in course
-        const course = await Course.findone({ _id: courseId, students: { $eleMatch: { $eq: userId } } })
+        const course = await Course.findOne({ _id: courseId, students: { $elemMatch: { $eq: userId } } })
+        console.log(course);
 
         if (!course) {
             return res.status(404).json({
@@ -42,7 +43,7 @@ exports.createRating = async (req, res) => {
         // const students = course.students.find((student) => student == userId )
 
 
-        const alreadyReviewed = await RatingAndReview.findOne({
+        const alreadyReviewed = await ReviewAndRating.findOne({
             user: userId,
             course: courseId,
         })
