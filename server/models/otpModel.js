@@ -16,14 +16,15 @@ const otpSchema = new mongoose.Schema({
     createdAt : {
         type : Date,
         default : Date.now(),
-        expires : 15*60
+        expires : 5*60
     }
 })
 
 otpSchema.pre("save", async function(){
     
     if (this.isNew){
-        await mailSender(this.email, this.otp, otpTemplate(this.otp)   ) 
+        await mailSender(this.email, this.otp, otpTemplate(this.otp))
+        console.log(`email sent succesfully at ${this.email}`) 
     }
     
 })

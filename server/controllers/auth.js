@@ -48,7 +48,7 @@ exports.sendOTP = async (req, res) => {
 
         //save in db
         try {
-            const newotp = await OTP.create({ email, otp });
+            const newotp = await OTP.create({ email, otp })
 
             res.status(400).json({
                 success: true,
@@ -128,7 +128,7 @@ exports.signUp = async (req, res) => {
         //save data in db
         const newuser = await User.create({
             fname, lname, email, contactNumber, accountType,
-            profile: profile._Id,
+            profile: profile._id,
             password: hashed
 
         })
