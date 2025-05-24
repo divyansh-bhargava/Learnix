@@ -166,13 +166,13 @@ const Home = () => {
                         </div>
 
                     </div>
-                   <div className='shadow-[-1px_-1px_10px_3px] shadow-blue-200'>
-                     <img src={ladder} alt="" className='bg-cover w-[40vw] h-auto rounded-sm' />
-                   </div>
+                    <div className='shadow-[-1px_-1px_10px_3px] shadow-blue-200'>
+                        <img src={ladder} alt="" className='bg-cover w-[40vw] h-auto rounded-sm' />
+                    </div>
 
                 </div>
 
-                <div className='lg:mt-15 mb-10'> 
+                <div className='lg:mt-15 mb-10'>
 
                     <div className='text-center mt-5' >
                         <div className='text-4xl  font-semibold'>
@@ -189,13 +189,13 @@ const Home = () => {
                         <img src={image3} alt="" className=' object-contain lg:-ml-38 scale-98 ' />
                     </div>
 
-                    <Btn children={"learn more"} css={"w-[8vw] mx-auto"} />
+                    <Btn children={"learn more"} css={"w-[8vw] mx-auto"} linkto={"/signup"} />
 
 
                 </div>
 
-                
-                
+
+
 
 
 
@@ -205,16 +205,22 @@ const Home = () => {
 
 
             <div className=' w-full bg-richblack-800'>
-            <div className='w-full bg-richblack-800 flex flex-col lg:flex-row lg:justify-evenly items-center p-5 pt-10 text-white gap-5 lg:mt-15 mb-10'>
+
+                <div className='w-full bg-richblack-800 flex flex-col lg:flex-row lg:justify-evenly items-center p-5 pt-10 text-white gap-5 lg:mt-15 mb-10'>
                     <div className='w-[35%] shadow-[-1px_-1px_10px_3px] shadow-blue-200 '>
                         <img src={teacher} alt="" />
                     </div>
                     <div className='flex flex-col gap-4'>
-                         <div className='text-4xl font-bold pl-5'>Become an <Highlight text={"instructor"}/></div>
-                         <div className='text-lg text-richblack-200 pl-5 w-[45vw]'>Instructors from around the world teach millions of students on StudyNotion. We provide the tools and skills to teach what you love.</div>
-                         <Btn children={"Start Teaching Today"} css={"w-[13vw]"}/>   
+                        <div className='text-4xl font-bold pl-5'>Become an <Highlight text={"instructor"} /></div>
+                        <div className='text-lg text-richblack-200 pl-5 w-[45vw]'>Instructors from around the world teach millions of students on StudyNotion. We provide the tools and skills to teach what you love.</div>
+                        <Btn children={"Start Teaching Today"} css={"w-[13vw]"} />
                     </div>
-            </div>
+                </div>
+
+                <div>
+                    <div className='text-center text-4xl text-gray-100'><Highlight text={"Review "} /> from other learner</div>
+                </div>
+
             </div>
 
 
