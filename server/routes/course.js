@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router()
 
-const {isAuth ,isAdmin ,isStudent , isInstructor } = require("../middleware/Auth")
+const {isAuth ,isAdmin ,isStudent , isInstructor} = require("../middleware/Auth")
 
 const {getAllCourse , createCourse , getCourseAllDetails} = require("../controllers/course")
 

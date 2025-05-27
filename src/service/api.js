@@ -10,3 +10,18 @@ export const authEndpoint = {
   RESETPASSWORD_API: BASE_URL + "/auth//resetPassword"
 
 }
+
+export const courseEndpoint = {
+  CREATECOURSE_API : BASE_URL + "/course/createCourse",
+  GETALLCOURSE_API : BASE_URL + "/course/getAllCourse",
+  GETCOURSEDETAILS_API : BASE_URL + "/course/getCourseAllDetails",
+
+  ADDSECTION_API : BASE_URL + "/course/addSection",
+  UPDATESECTION_API : BASE_URL + "/course/updateSection",
+  DELETESECTION_API : BASE_URL + "/course/deletesection",
+
+  ADDSUBSECTION_API : BASE_URL + "/course/addSubSection",
+  UPDATESUBSECTION_API : BASE_URL + "/course/updateSubSection",
+  DELETESUBSECTION_API : BASE_URL + "/course/deleteSubSection",
+
+}

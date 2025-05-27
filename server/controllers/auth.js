@@ -23,7 +23,7 @@ exports.sendOTP = async (req, res) => {
         if (user) {
             return res.status(404).json({
                 success: false,
-                message: "alredy signup with this email"
+                message: "already signup with this email"
             })
         }
 
