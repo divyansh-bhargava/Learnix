@@ -1,15 +1,19 @@
 import React from "react"
-import {Route, Routes, useNavigate } from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import Home from "./pages/home";
 import Signup from "./pages/Signup";
 import Login from "./pages/login";
 import VerifyEmail from "./pages/Verify-email";
+import Nav from "./component/nav/Navbar"
+
 
 function App() {
   
 
   return (
-    <div  className="w-screen min-h-screen flex flex-col  ">
+    <div  className="w-screen min-h-screen flex flex-col bg-richblack-800 overflow-x-hidden">
+
+      <Nav/>
 
       <Routes>
 

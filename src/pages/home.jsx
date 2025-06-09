@@ -25,7 +25,7 @@ const Home = () => {
             <div className='w-full flex flex-col items-center  gap-4 bg-richblack-800'>
 
                 <Link to="/signup" >
-                    <div className=" group border-4 m-6 mt-10 border-richblack-800 rounded-full bg-richblack-900 text-richblack-200 shadow-[1px_-2px_25px_-1px] shadow-blue-200 hover:scale-90 hover:bg-richblack-900 transition-all duration-200 hover:shadow-none ">
+                    <div className=" group border-4 m-6 mt-10 border-richblack-800 rounded-full bg-richblack-900 text-richblack-200 shadow-[1px_-1px_20px_-1px] shadow-blue-200 hover:scale-90 hover:bg-richblack-900 transition-all duration-200 hover:shadow-none ">
                         <div className="loader transition-all duration-200 px-4 pl-8 py-2">
                             <p>Become an</p>
                             <div class="words">

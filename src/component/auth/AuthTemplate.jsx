@@ -1,22 +1,34 @@
 import React from 'react'
+import LoginFrom from './LoginFrom'
+import SignupFrom from './SignupFrom'
 
-function AuthTemplate({form , data , photo }) {
+function AuthTemplate({ formType, title, description1, description2 }) {
   return (
-    <div className='flex flex-row justify-around items-center gap-10 bg-richblack-800 text-white w-full h-[90dvh]'>
-        <div className=''>
-          <div className=''>
-              {data}
-          </div>
-          <div className='w-[400px] h-[500px] bg-amber-300 rounded-b-sm '>
-             {form}
-          </div>
-            
-        </div>
 
-        <div className='w-[500px] h-[500px] bg-amber-300'>
-            <img src={photo} alt="" />
-        </div>
+    <div className='flex items-center justify-center h-[92vh]'>
+
+      <div className='flex flex-col gap-3 items-center justify-center bg-gray-200 w-1/3 rounded-xl p-10 pb-15'>
+        <div className='text-gray-800 text-3xl font-bold font-edu-sa'>{title}</div>
+        <div className='text-gray-500 text-lg font-semibold'>{description1}</div>
+        <div className='text-blue-300 text-lg font-edu-sa font-semibold '>{description2}</div>
+
+
+        {
+          formType === "login" ?
+            (
+              <LoginFrom />
+            )
+            :
+            (
+              <SignupFrom/>
+            )
+        }
+
+
+      </div>
+
     </div>
+
   )
 }
 

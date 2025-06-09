@@ -1,7 +1,7 @@
 import { apiConnector } from "../apiconnector";
 import { authEndpoint } from "../api";
 import toast from "react-hot-toast";
-import { setUserData , setLoading , setToken} from "../../redux/slices"
+import { setUserData , setLoading , setToken} from "../../redux/slices/authSlice"
 
 const { SENDOTP_API , SIGNUP_API , LOGIN_API , CHANGEPASSWORD_API , RESETPASSTOKEN_API , RESETPASSWORD_API } = authEndpoint
 
@@ -20,6 +20,7 @@ export function sendOTP(email , navigate){
             }
 
             toast.success("OTP Send Successfully")
+            navigate("/verify-email")
         }
         catch(err){
 
@@ -29,7 +30,7 @@ export function sendOTP(email , navigate){
 
         dispatch(setLoading(false))
         toast.dismiss(id)
-        navigate("/verify-email")
+        
 
     }
     

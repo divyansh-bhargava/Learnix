@@ -2,7 +2,9 @@ import React from 'react'
 
 function VerifyEmail() {
   return (
-    <div>Verify-email</div>
+    <div>
+      
+    </div>
   )
 }
 

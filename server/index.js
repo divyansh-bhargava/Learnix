@@ -1,5 +1,6 @@
 const express = require("express")
 const app = express()
+const cors = require("cors")
 
 require("dotenv").config()
 
@@ -25,6 +26,7 @@ app.use(
 	})
 )
 
+app.use(cors())
 
 app.use("/api/v1/auth", user);
 app.use("/api/v1/course",  course);

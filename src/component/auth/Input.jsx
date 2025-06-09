@@ -1,12 +1,15 @@
-import React from 'react'
+import { useId , forwardRef } from "react"
 
-function Input() {
+function Input({label , required , type , ...props},ref) {
+
+    const id = useId()
+
     return (
         <div className="inputGroup">
-            <input type="text" required="" autocomplete="off" />
-                <label for="name">Name</label>
+            <input id={id} type={type} ref={ref} required={required} autocomplete="off" {...props} />
+            <label for="name">{label}</label>
         </div>
     )
 }
 
-export default Input
+export default forwardRef(Input)
