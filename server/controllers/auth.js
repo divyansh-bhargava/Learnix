@@ -50,7 +50,14 @@ exports.sendOTP = async (req, res) => {
         try {
             const newotp = await OTP.create({ email, otp })
 
-            res.status(400).json({
+            if(!newotp){
+                return res.status(404).json({
+                    success: false,
+                    message: "already signup with this email"
+                })
+            }
+
+            return res.status(200).json({
                 success: true,
                 data: newotp,
                 message: "otp send successfully"
@@ -143,7 +150,7 @@ exports.signUp = async (req, res) => {
     } catch (err) {
         console.log("error in sign in ")
         console.error(err)
-        res.status(409).json({
+        res.status(200).json({
             success: false,
             message: "You are already signed in."
         })

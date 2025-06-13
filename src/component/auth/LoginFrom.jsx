@@ -1,21 +1,29 @@
 import React from 'react'
 import Input from './Input'
 import Btn from './Btn'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form';
+import { logIn } from '../../service/operation/authservices';
+import { useDispatch } from 'react-redux';
+
+
 
 function LoginFrom() {
 
     const { register , handleSubmit , formState:{errors , isSubmitting} ,reset } = useForm()
 
-    const onsubmit = async(data) => {
-        
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    const onsubmit = async (data) => {
+
+        dispatch(logIn(data , navigate))
         reset()
     }
 
 
     return (
-        <form onSubmit={handleSubmit(onsubmit)}>
+        <form onSubmit={handleSubmit(onsubmit)} className='w-[90%]'>
             <Input 
                 label={"Email"} 
                 required={true} 

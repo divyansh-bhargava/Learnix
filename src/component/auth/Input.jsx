@@ -6,8 +6,8 @@ function Input({label , required , type , ...props},ref) {
 
     return (
         <div className="inputGroup">
-            <input id={id} type={type} ref={ref} required={required} autocomplete="off" {...props} />
-            <label for="name">{label}</label>
+            <input id={id} type={type} ref={ref} required={required}  {...props} />
+            <label >{label}</label>
         </div>
     )
 }

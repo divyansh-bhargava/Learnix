@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema({
 
     accountType : {
         type : String,
-        enum : ["student" , "instructor" , "admin"]
+        enum : ["Student" , "Instructor" , "Admin"]
     },
 
     active: {

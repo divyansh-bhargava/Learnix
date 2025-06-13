@@ -7,7 +7,7 @@ export const authEndpoint = {
   LOGIN_API: BASE_URL + "/auth/logIn",
   CHANGEPASSWORD_API : BASE_URL + "/auth/changePassword",
   RESETPASSTOKEN_API: BASE_URL + "/auth/resetPasswordLink",
-  RESETPASSWORD_API: BASE_URL + "/auth//resetPassword"
+  RESETPASSWORD_API: BASE_URL + "/auth/resetPassword"
 
 }
 

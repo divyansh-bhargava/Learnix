@@ -47,7 +47,7 @@ exports.resetPasswordLink = async (req, res) => {
         const mail = await mailSender(email, url, body)
         console.log(mail);
 
-        return res.status(400).json({
+        return res.status(200).json({
             success: true,
             data : mail,
             message: "mail send successfully"
@@ -68,6 +68,8 @@ exports.resetPassword = async (req, res) => {
     try {
 
         const { password, confirmPassword, token } = req.body
+
+        console.log(token);
 
         if(password !== confirmPassword){
             return res.status(400).json({

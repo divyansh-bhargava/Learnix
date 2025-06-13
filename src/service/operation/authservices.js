@@ -15,6 +15,8 @@ export function sendOTP(email , navigate){
         try{
             const response = await apiConnector("post" , SENDOTP_API , {email} )
 
+            console.log(response);
+
             if(!response.data.success){
                 throw new Error(response.data.message);   
             }
@@ -122,7 +124,6 @@ export function resetPasswordLink(email , setSendMail){
 
 export function resetPassword( body , navigate){
     return async (dispatch) => {
-        const id = toast.loading("loading...")
         dispatch(setLoading(true))
 
         try {
@@ -134,14 +135,15 @@ export function resetPassword( body , navigate){
             }
 
             toast.success("reset password successfully")
+            navigate("/logIn")
 
         } catch (err) {
             
             console.log(err);
             toast.error("failed")
+            navigate("/forget-password")
         }
         dispatch(setLoading(false))
-        toast.dismiss(id)
-        navigate("/logIn")
+        
     }
 }

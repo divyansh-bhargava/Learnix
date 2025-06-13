@@ -19,7 +19,7 @@ function Navbar() {
   const dispatch = useDispatch()
 
   const location = useLocation()
- 
+
   const [loading, setLoading] = useState(false)
   const [catalog, setcatalog] = useState([])
 
@@ -65,15 +65,15 @@ function Navbar() {
                       <div>Catalog</div>
                       <IoMdArrowDropdown />
                     </div>
-                    <div className='invisible absolute  z-[1000] flex w-50 translate-x-[-50%]  flex-col rounded-lg bg-richblack-5 p-4 text-richblack-900 opacity-0 transition-all duration-100 group-hover:visible group-hover:translate-y-[1.65em] group-hover:opacity-100 lg:w-80'>
+                    <div className='invisible absolute  z-[1000] flex w-45 translate-x-[-50%]  flex-col rounded-lg bg-richblack-5 p-4 text-richblack-900 opacity-0 transition-all duration-100 group-hover:visible group-hover:translate-y-[1.65em] group-hover:opacity-100 lg:w-70'>
                       <div className="absolute  left-[70%] top-0 -z-10 h-6 w-6 translate-x-[-12%] translate-y-[-40%] rotate-45 select-none rounded bg-richblack-5"></div>
                       <ul>
 
-                        {loading ? (<div className="text-black">loading</div>) :
+                        {loading ? (<li className="text-black">loading</li>) :
                           (
                             catalog?.map((val, index) => (
                               <Link to={`/catalog/${val.name}`}>
-                                <li key={index} className={`text-lg h-10 font-semibold p-2 transition-all duration-150 hover:bg-richblack-200 rounded-lg first-letter:uppercase ${matchroute(`/catalog/${val.name}`) ? "text-amber-600" : "text-black"}`}>{val.name} </li>
+                                <li key={index} className={`text-lg h-10 font-semibold p-2 transition-all duration-150 hover:bg-richblack-200 rounded-lg first-letter:uppercase font-serif ${matchroute(`/catalog/${val.name}`) ? "text-amber-600" : "text-black"}`}>{val.name} </li>
                               </Link>
                             ))
                           )}
@@ -103,7 +103,7 @@ function Navbar() {
             token !== null ? (
               <div className='flex gap-5'>
                 {
-                  user && user.accountType !== "instructor" &&
+                  user && user.accountType !== "Instructor" &&
                   (
                     <Link to={"/Dashboard/cart"}>
                       <div className="relative">
