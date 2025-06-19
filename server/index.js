@@ -13,6 +13,7 @@ const fileUpload = require("express-fileupload")
 
 const user = require("./routes/user")
 const course = require("./routes/course")
+const profile = require("./routes/profile")
 
 
 const port = process.env.PORT || 3000
@@ -30,6 +31,7 @@ app.use(cors())
 
 app.use("/api/v1/auth", user);
 app.use("/api/v1/course",  course);
+app.use("/api/v1/profile",  profile);
 
 
 

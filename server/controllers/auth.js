@@ -50,6 +50,8 @@ exports.sendOTP = async (req, res) => {
         try {
             const newotp = await OTP.create({ email, otp })
 
+            console.log(newotp);
+
             if(!newotp){
                 return res.status(404).json({
                     success: false,
@@ -175,7 +177,7 @@ exports.signIn = async (req, res) => {
         //check password
         if (! await bcrypt.compare(password, user.password)) {
             return res.status(400).json({
-                success: true,
+                success: false,
                 message: " password does not match "
             })
         }
