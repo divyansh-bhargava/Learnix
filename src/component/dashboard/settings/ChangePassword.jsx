@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 function ChangePassword() {
 
-    const { register, handleSubmit, formState: { errors } } = useForm()
+    const { register, handleSubmit, reset , formState: { errors } } = useForm()
 
     const {token } = useSelector((state) => state.auth)
     const dispatch = useDispatch()
@@ -16,6 +16,7 @@ function ChangePassword() {
     function ChangePasswordHandler(data) {
         try {
             dispatch(UpdatePassword(token , data))
+            reset()
         } catch (error) {
             console.log(error);
         }
@@ -23,13 +24,13 @@ function ChangePassword() {
 
 
     return (
-        <div className='flex flex-col gap-y-4 w-full border border-richblack-700 bg-richblack-800 px-7 py-5 rounded-lg'>
+        <div className='flex flex-col gap-y-4 w-full border border-richblack-600 bg-richblack-800 px-7 py-5 rounded-lg'>
             <h1 className='text-xl text-gray-100 mb-5 font-bold font-sans'>Change Password</h1>
             <form onSubmit={handleSubmit(ChangePasswordHandler)}>
                 
-                <div className=' flex justify-between  items-center  '>
+                <div className=' flex justify-between items-center'>
                     
-                    <div className=' flex gap-5'>
+                    <div className=' flex gap-15'>
                         <div className="relative flex flex-col gap-2 lg:w-[48%]">
                             <label htmlFor="oldPassword" className="lable-style">
                                 Current Password
@@ -58,7 +59,7 @@ function ChangePassword() {
                                 name="newPassword"
                                 id="newPassword"
                                 placeholder="Enter New Password"
-                                className="form-style"
+                                className="form-sytle"
                                 {...register("newPassword", { required: true })}
                             />
                             {errors.newPassword && (
@@ -69,9 +70,10 @@ function ChangePassword() {
                         </div>
 
                     </div>
+                    
                     <button
                         type='submit'
-                        className='bg-amber-300 text-lg px-4 py-1 rounded-sm'
+                        className='bg-amber-300 text-lg px-4 py-1 rounded-sm '
                     >
                         Submit
                     </button>

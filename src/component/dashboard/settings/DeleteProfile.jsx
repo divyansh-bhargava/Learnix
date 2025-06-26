@@ -27,7 +27,7 @@ function DeleteProfile() {
             </div>
             <div className='flex flex-col space-y-4'>
                 <h1 className='text-lg text-richblack-5 font-semibold'>Delete Account</h1>
-                <div className='text-pink-50 space-y-2 w-3/5'>
+                <div className='text-pink-50 space-y-2 w-[65%]'>
                     <p>Would you like to delete account?</p>
                     <p>
                         This account may contain Paid Courses. Deleting your account is
@@ -37,7 +37,7 @@ function DeleteProfile() {
             </div>
             <button
                 type="button"
-                className="w-fit cursor-pointer italic text-pink-300 m-4"
+                className="w-fit cursor-pointer italic text-pink-300 m-4 border px-4 py-2 rounded-md border-pink-500"
                 onClick={handleClick}
             >
                 Delete

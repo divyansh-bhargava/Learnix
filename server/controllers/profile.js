@@ -4,10 +4,12 @@ const Course = require("../models/courseModel")
 const CourseProgress = require("../models/couseProgressModel")
 const { default: mongoose } = require("mongoose")
 const bcrypt = require("bcrypt")
+const uplodeImageTOCloudinary = require("../utils/cloudinary")
+
 
 exports.updateProfile = async (req, res) => {
     try {
-        const { fname = "", lname = "", about = "", gender = "", dob = "" } = req.body
+        const { fname = "", lname = "", about = "", gender = "", dob = "", contactNumber = "" } = req.body
         const userId = req.user.Id
 
         if (!gender || !dob) {
@@ -17,7 +19,7 @@ exports.updateProfile = async (req, res) => {
             })
         }
 
-        const user = User.findById(userId)
+        const user = await User.findById(userId)
 
         if (!user) {
             return res.status(400).json({
@@ -27,10 +29,10 @@ exports.updateProfile = async (req, res) => {
         }
 
         if (fname || lname) {
-            const newuser = await User.findByIdAndUpdate(userId, { fname, lname })
+            const newuser = await User.findByIdAndUpdate(userId, { fname, lname, contactNumber })
         }
 
-        const profile = await Profile.findbyid(user.profile)
+        const profile = await Profile.findById(user.profile)
 
         profile.gender = gender
         profile.dob = dob
@@ -40,7 +42,7 @@ exports.updateProfile = async (req, res) => {
 
         const updatedUser = await User.findById(userId).populate("profile").exec()
 
-        return res.json({
+        return res.status(200).json({
             success: true,
             message: "Profile updated successfully",
             data: updatedUser
@@ -48,7 +50,7 @@ exports.updateProfile = async (req, res) => {
 
     } catch (err) {
 
-        return res.json({
+        return res.status(400).json({
             success: false,
             message: " error in Profile updated process",
         })
@@ -113,7 +115,7 @@ exports.updatePassword = async (req, res) => {
             })
         }
 
-        const user = User.findById(Id)
+        const user = await User.findById(Id)
 
         if (! await bcrypt.compare(oldPassword, user.password)) {
             return res.status(400).json({
@@ -122,16 +124,16 @@ exports.updatePassword = async (req, res) => {
             })
         }
 
-        const hash = bcrypt.hash(newPassword , 10)
+        const pass = await bcrypt.hash(newPassword, 10)
 
-        user.password = hash
+        user.password = pass
 
         await user.save()
 
         return res.status(200).json({
-            success : true,
-            data : user,
-            message : "password changed successfully"
+            success: true,
+            data: user,
+            message: "password changed successfully"
         })
 
 
@@ -140,9 +142,45 @@ exports.updatePassword = async (req, res) => {
         console.log(error);
 
         return res.status(400).json({
-            success : false,
-            message : "err in updatepassword"
+            success: false,
+            message: "err in updatepassword"
         })
 
     }
-} 
+}
+
+
+exports.updatePicture = async (req, res) => {
+    try {
+        console.log(req.files);
+        const img = req.files.displayPicture
+        
+        const { Id } = req.user
+
+        // upload image to cloudienary
+        const image = await uplodeImageTOCloudinary(img, process.env.FOLDER_NAME, 1000, 1000)
+
+        console.log(image);
+
+        const user = await User.findByIdAndUpdate(Id, { image: image.secure_url }, { new: true })
+
+        console.log(user);
+
+        const updatedUser = await User.findById(user._id).populate("profile").exec()
+
+        return res.status(200).json({
+            success: true,
+            message: " DP Updateed Successfully",
+            data: updatedUser
+        })
+
+
+    } catch (error) {
+        console.log(error);
+
+        return res.status(400).json({
+            success: false,
+            message: "err in update DP"
+        })
+    }
+}
