@@ -101,12 +101,12 @@ function Navbar() {
         <div >
           {
             token !== null ? (
-              <div className='flex gap-5'>
+              <div className='flex gap-5 items-center'>
                 {
                   user && user.accountType !== "Instructor" &&
                   (
-                    <Link to={"/Dashboard/cart"}>
-                      <div className="relative">
+                    <Link to={"/dashboard/cart"}>
+                      <div className="relative ">
                         <AiOutlineShoppingCart />
                         {totalItem > 0 && (<span className="absolute">{totalItem}</span>)}
                       </div>

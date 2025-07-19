@@ -44,16 +44,28 @@ exports.createCourse = async (req, res) => {
         instructions,
         instructor: instructorId,
         tumbnail: image.url,
-        category: category
+        category: categorydb._id
     })
 
-    const user = await User.findByIdAndUpdate(instructorId, {
-        courses: course._id
-    }, { new: true })
+    const user = await User.findByIdAndUpdate(
+        { _id : instructorId},
+        {
+            $push : {
+                courses: course._id
+            }
+        }, 
+        { new: true }
+    )
 
-    const newcategory = await Category.findByIdAndUpdate(category, {
-        courses: course._id
-    }, { new: true })
+    const newcategory = await Category.findByIdAndUpdate(
+        { _id : categorydb._id},
+        {
+            $push : {
+                courses: course._id
+            }
+        }, 
+        { new: true }
+    )
 
     res.status(400).json({
         success: true,
@@ -97,7 +109,7 @@ exports.getCourseAllDetails = async (req, res) => {
         const courseId = req.body.courseId
 
         //find course
-        const details = Course.findById(courseId)
+        const details = await Course.findById(courseId)
             .populate({
                 path: "instructor",
                 populate: {
@@ -116,7 +128,14 @@ exports.getCourseAllDetails = async (req, res) => {
             .populate("category")
             .exec()
 
-        return res.status(500).json({
+        let timeInSecond = 0;
+        
+        details.courseContent.forEach( (section) => {
+            section.subSection
+        })
+
+
+        return res.status(200).json({
             success: true,
             data: details,
             message: "all details of course fetched succesfully"
@@ -124,7 +143,7 @@ exports.getCourseAllDetails = async (req, res) => {
     }
     catch (err) {
         console.log(err);
-        return res.status(500).json({
+        return res.status(400).json({
             success: false,
             message: " err in fectcing details of course "
         })

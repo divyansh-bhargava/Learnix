@@ -24,8 +24,18 @@ export const courseEndpoint = {
   UPDATESUBSECTION_API : BASE_URL + "/course/updateSubSection",
   DELETESUBSECTION_API : BASE_URL + "/course/deleteSubSection",
 
+  GETALLMYCOURSE_API : BASE_URL + "/profile/getAllCourses"
+
 } 
 
 export const categoryEndpoint = {
   CATEGORIES_API : BASE_URL + "/course/showAllCategories",
+}
+
+export const settingsEndpoint = {
+  DELETEACCOUNT_API : BASE_URL + "/profile/deleteAccount", 
+  UPDATEPROFILE_API :  BASE_URL + "/profile/updateProfile",
+  UPDATEPASSWORD_API : BASE_URL + "/profile/updatePassword",
+  UPDATEPROFILEPICTURE_API : BASE_URL + "/profile/updateProfilePicture",
+  
 }

@@ -154,7 +154,7 @@ exports.updatePicture = async (req, res) => {
     try {
         console.log(req.files);
         const img = req.files.displayPicture
-        
+
         const { Id } = req.user
 
         // upload image to cloudienary
@@ -182,5 +182,70 @@ exports.updatePicture = async (req, res) => {
             success: false,
             message: "err in update DP"
         })
+    }
+}
+
+exports.enrolledCourse = async (req, res) => {
+    try {
+        const { Id } = req.user
+
+        const user = await User.findById(Id)
+            .populate({
+                path: "courses",
+                populate: {
+                    path: "courseContent",
+                    populate: {
+                        path: "subsection"
+                    }
+                }
+            }
+            )
+
+        let totaldurationInSec;
+        let sectionlength;
+
+        for (let i = 0; i < user.courses.length; i++) {
+            totaldurationInSec = 0;
+            sectionlength = 0;
+
+            for (let j = 0; j < user.courses[i].courseContent.length; j++) {
+
+                totaldurationInSec = user.courses[i].courseContent[j].subsection.reduce((acc, curr) => (
+                    acc + parseInt(curr.duration)
+                ), 0)
+
+                sectionlength += user.courses[i].courseContent[j].subsection.length
+            }
+
+            user.courses[i].totalDuration = totaldurationInSec;
+
+            let courseProgress = await CourseProgress.findOne({
+                course :  user.courses[i]._id ,
+                userId : user._id
+            }).completedss.length
+
+            if(sectionlength == 0 ){
+               user.courses[i].completePercentage = 100 
+            }
+            else{
+                user.courses[i].completePercentage = Math.round( courseProgress/sectionlength * 100 )
+            }
+        }
+
+        return res.status(200).json({
+            success : true,
+            data : user.courses,
+            message : "all user courses data fetched successfully "
+        })
+
+    } catch (error) {
+
+        console.log(error)
+
+        return res.status(400).json({
+            success : false,
+            message : "all user courses data fetched Unsuccessfully "
+        })
+
     }
 }

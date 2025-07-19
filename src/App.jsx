@@ -7,6 +7,13 @@ import VerifyEmail from "./pages/Verify-email";
 import Nav from "./component/nav/Navbar"
 import ResetPasswordA from "./pages/resetPasswordA";
 import ResetPasswordB from "./pages/ResetPasswordB";
+import Footer from './component/common/Footer';
+import About from "./pages/About";
+import Dashboard from "./pages/Dashboard"
+import MyProfile from "./component/dashboard/common/MyProfile"
+import Cart from "./component/dashboard/cart/cart"
+import Settings from "./component/dashboard/settings/Settings";
+import MyCourse from "./component/dashboard/common/MyCourse";
 
 
 function App() {
@@ -25,8 +32,19 @@ function App() {
         <Route path="/verify-email" element={<VerifyEmail/>} />
         <Route path="/forget-password" element={<ResetPasswordA/>} />
         <Route path="/resetpassword/:id" element={<ResetPasswordB/>} />
+        <Route path="/about" element={<About/>} />
+
+        <Route element={<Dashboard/>}>
+          <Route path="/dashboard/my-profile" element={<MyProfile/>} />
+          <Route path="/dashboard/cart" element={<Cart/>} />
+          <Route path="/dashboard/settings" element={<Settings/>} />
+          <Route path="/dashboard/my-courses" element={<MyCourse/>} />
+        </Route>
+      
 
       </Routes>
+
+      <Footer/>
 
     </div>
 
