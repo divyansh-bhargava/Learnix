@@ -1,5 +1,5 @@
 const mailSender = require("../utils/mailSender")
-const countactUsEmail = require("../mails/contactUsEmail")
+const contactUsEmail = require("../mails/contactUsEmail")
 
 exports.countactUs = async(req , res ) => {
     const { email, firstname, lastname, message, phoneNo } = req.body
@@ -16,7 +16,7 @@ exports.countactUs = async(req , res ) => {
         const mail = await mailSender(
             email,
             "Your Data send successfully",
-            countactUsEmail(email , firstname , lastname , message , phoneNo)
+            contactUsEmail(email , firstname , lastname , message , phoneNo)
         )
 
         return res.status(200).json({
